@@ -1,0 +1,6 @@
+name: KICS Github Action
+description: "Checkmarx TF"
+runs:
+  using: docker
+  image: Checkmarx/kics-github-action@v1.6
+
