@@ -1,7 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as cmd_cdk from '../cdk.json';
-import * as env_helper from './env_config' 
+import * as env_helper from './env_config';
 import { Construct } from 'constructs';
 
 
