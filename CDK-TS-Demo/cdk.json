@@ -38,5 +38,11 @@
       "aws",
       "aws-cn"
     ]
+  },
+  "env_config" : {
+    "dev" : {
+      "Vpc_Id" : "VPC-123455667"
+    }
+
   }
 }
