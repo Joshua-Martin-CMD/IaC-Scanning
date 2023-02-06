@@ -38,5 +38,14 @@
       "aws",
       "aws-cn"
     ]
+  },
+  "env_config" : {
+    "dev" : {
+      "Vpc_Id" : "VPC-123455667",
+      "instance" : {
+        "ami-id" : "ami-xyz"
+      }
+    }
+
   }
 }
