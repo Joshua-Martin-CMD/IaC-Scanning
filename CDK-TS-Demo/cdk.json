@@ -41,7 +41,10 @@
   },
   "env_config" : {
     "dev" : {
-      "Vpc_Id" : "VPC-123455667"
+      "Vpc_Id" : "VPC-123455667",
+      "instance" : {
+        "ami-id" : "ami-xyz"
+      }
     }
 
   }
