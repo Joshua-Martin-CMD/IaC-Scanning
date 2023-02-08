@@ -1,0 +1,465 @@
+Resources:
+  DemoVPC2409DB3F:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.10.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: CdkTsDemoStack/DemoVPC
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/DemoVPC/Resource
+  DemoVPCPublicSubnet1SubnetB6592B34:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: DemoVPC2409DB3F
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      CidrBlock: 10.10.0.0/18
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Public
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: CdkTsDemoStack/DemoVPC/PublicSubnet1
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/DemoVPC/PublicSubnet1/Subnet
+  DemoVPCPublicSubnet1RouteTable833A1DC8:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: DemoVPC2409DB3F
+      Tags:
+        - Key: Name
+          Value: CdkTsDemoStack/DemoVPC/PublicSubnet1
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/DemoVPC/PublicSubnet1/RouteTable
+  DemoVPCPublicSubnet1RouteTableAssociationC64BEC15:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: DemoVPCPublicSubnet1RouteTable833A1DC8
+      SubnetId:
+        Ref: DemoVPCPublicSubnet1SubnetB6592B34
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/DemoVPC/PublicSubnet1/RouteTableAssociation
+  DemoVPCPublicSubnet1DefaultRoute22933307:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: DemoVPCPublicSubnet1RouteTable833A1DC8
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: DemoVPCIGWD7695CC8
+    DependsOn:
+      - DemoVPCVPCGW5132360C
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/DemoVPC/PublicSubnet1/DefaultRoute
+  DemoVPCPublicSubnet1EIPFF4AD3A2:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: CdkTsDemoStack/DemoVPC/PublicSubnet1
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/DemoVPC/PublicSubnet1/EIP
+  DemoVPCPublicSubnet1NATGateway301A7B38:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      SubnetId:
+        Ref: DemoVPCPublicSubnet1SubnetB6592B34
+      AllocationId:
+        Fn::GetAtt:
+          - DemoVPCPublicSubnet1EIPFF4AD3A2
+          - AllocationId
+      Tags:
+        - Key: Name
+          Value: CdkTsDemoStack/DemoVPC/PublicSubnet1
+    DependsOn:
+      - DemoVPCPublicSubnet1DefaultRoute22933307
+      - DemoVPCPublicSubnet1RouteTableAssociationC64BEC15
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/DemoVPC/PublicSubnet1/NATGateway
+  DemoVPCPublicSubnet2Subnet980625E0:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: DemoVPC2409DB3F
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      CidrBlock: 10.10.64.0/18
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Public
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: CdkTsDemoStack/DemoVPC/PublicSubnet2
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/DemoVPC/PublicSubnet2/Subnet
+  DemoVPCPublicSubnet2RouteTableA55BFCCD:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: DemoVPC2409DB3F
+      Tags:
+        - Key: Name
+          Value: CdkTsDemoStack/DemoVPC/PublicSubnet2
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/DemoVPC/PublicSubnet2/RouteTable
+  DemoVPCPublicSubnet2RouteTableAssociationE7A0B7A1:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: DemoVPCPublicSubnet2RouteTableA55BFCCD
+      SubnetId:
+        Ref: DemoVPCPublicSubnet2Subnet980625E0
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/DemoVPC/PublicSubnet2/RouteTableAssociation
+  DemoVPCPublicSubnet2DefaultRoute30D76A52:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: DemoVPCPublicSubnet2RouteTableA55BFCCD
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: DemoVPCIGWD7695CC8
+    DependsOn:
+      - DemoVPCVPCGW5132360C
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/DemoVPC/PublicSubnet2/DefaultRoute
+  DemoVPCPublicSubnet2EIP03E095AC:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: CdkTsDemoStack/DemoVPC/PublicSubnet2
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/DemoVPC/PublicSubnet2/EIP
+  DemoVPCPublicSubnet2NATGatewayA2C150AC:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      SubnetId:
+        Ref: DemoVPCPublicSubnet2Subnet980625E0
+      AllocationId:
+        Fn::GetAtt:
+          - DemoVPCPublicSubnet2EIP03E095AC
+          - AllocationId
+      Tags:
+        - Key: Name
+          Value: CdkTsDemoStack/DemoVPC/PublicSubnet2
+    DependsOn:
+      - DemoVPCPublicSubnet2DefaultRoute30D76A52
+      - DemoVPCPublicSubnet2RouteTableAssociationE7A0B7A1
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/DemoVPC/PublicSubnet2/NATGateway
+  DemoVPCPrivateSubnet1Subnet577398CC:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: DemoVPC2409DB3F
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      CidrBlock: 10.10.128.0/18
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Private
+        - Key: aws-cdk:subnet-type
+          Value: Private
+        - Key: Name
+          Value: CdkTsDemoStack/DemoVPC/PrivateSubnet1
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/DemoVPC/PrivateSubnet1/Subnet
+  DemoVPCPrivateSubnet1RouteTable12D271CE:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: DemoVPC2409DB3F
+      Tags:
+        - Key: Name
+          Value: CdkTsDemoStack/DemoVPC/PrivateSubnet1
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/DemoVPC/PrivateSubnet1/RouteTable
+  DemoVPCPrivateSubnet1RouteTableAssociationFD4C440A:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: DemoVPCPrivateSubnet1RouteTable12D271CE
+      SubnetId:
+        Ref: DemoVPCPrivateSubnet1Subnet577398CC
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/DemoVPC/PrivateSubnet1/RouteTableAssociation
+  DemoVPCPrivateSubnet1DefaultRouteA9EB711D:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: DemoVPCPrivateSubnet1RouteTable12D271CE
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: DemoVPCPublicSubnet1NATGateway301A7B38
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/DemoVPC/PrivateSubnet1/DefaultRoute
+  DemoVPCPrivateSubnet2SubnetBF71F3B1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: DemoVPC2409DB3F
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      CidrBlock: 10.10.192.0/18
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Private
+        - Key: aws-cdk:subnet-type
+          Value: Private
+        - Key: Name
+          Value: CdkTsDemoStack/DemoVPC/PrivateSubnet2
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/DemoVPC/PrivateSubnet2/Subnet
+  DemoVPCPrivateSubnet2RouteTable700990FB:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: DemoVPC2409DB3F
+      Tags:
+        - Key: Name
+          Value: CdkTsDemoStack/DemoVPC/PrivateSubnet2
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/DemoVPC/PrivateSubnet2/RouteTable
+  DemoVPCPrivateSubnet2RouteTableAssociationB6F32155:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: DemoVPCPrivateSubnet2RouteTable700990FB
+      SubnetId:
+        Ref: DemoVPCPrivateSubnet2SubnetBF71F3B1
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/DemoVPC/PrivateSubnet2/RouteTableAssociation
+  DemoVPCPrivateSubnet2DefaultRoute92C2830D:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: DemoVPCPrivateSubnet2RouteTable700990FB
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: DemoVPCPublicSubnet2NATGatewayA2C150AC
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/DemoVPC/PrivateSubnet2/DefaultRoute
+  DemoVPCIGWD7695CC8:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: CdkTsDemoStack/DemoVPC
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/DemoVPC/IGW
+  DemoVPCVPCGW5132360C:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: DemoVPC2409DB3F
+      InternetGatewayId:
+        Ref: DemoVPCIGWD7695CC8
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/DemoVPC/VPCGW
+  IaCDemosgAFF2F360:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: CdkTsDemoStack/IaC-Demo-sg
+      GroupName: IaC-Demo-sg
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic by default
+          IpProtocol: "-1"
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allows SSH access from Internet
+          FromPort: 22
+          IpProtocol: tcp
+          ToPort: 22
+        - CidrIp: 0.0.0.0/0
+          Description: Allows HTTP access from Internet
+          FromPort: 80
+          IpProtocol: tcp
+          ToPort: 80
+        - CidrIp: 0.0.0.0/0
+          Description: Allows HTTPS access from Internet
+          FromPort: 443
+          IpProtocol: tcp
+          ToPort: 443
+      VpcId:
+        Ref: DemoVPC2409DB3F
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/IaC-Demo-sg/Resource
+  LinuxInstanceInstanceRoleA4D4D922:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                Fn::Join:
+                  - ""
+                  - - ec2.
+                    - Ref: AWS::URLSuffix
+        Version: "2012-10-17"
+      Tags:
+        - Key: Name
+          Value: IaC-Demo_instance
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/Linux-Instance/InstanceRole/Resource
+  LinuxInstanceInstanceProfile77A89542:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - Ref: LinuxInstanceInstanceRoleA4D4D922
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/Linux-Instance/InstanceProfile
+  LinuxInstanceBD5C197A:
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      IamInstanceProfile:
+        Ref: LinuxInstanceInstanceProfile77A89542
+      ImageId:
+        Ref: SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter
+      InstanceType: c6g.micro
+      SecurityGroupIds:
+        - Fn::GetAtt:
+            - IaCDemosgAFF2F360
+            - GroupId
+      SubnetId:
+        Ref: DemoVPCPrivateSubnet1Subnet577398CC
+      Tags:
+        - Key: Name
+          Value: IaC-Demo_instance
+      UserData:
+        Fn::Base64: "#!/bin/bash"
+    DependsOn:
+      - LinuxInstanceInstanceRoleA4D4D922
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/Linux-Instance/Resource
+  CDKMetadata:
+    Type: AWS::CDK::Metadata
+    Properties:
+      Analytics: v2:deflate64:H4sIAAAAAAAA/1WQzW7CMBCEn6V3xyW0B64oqlAulZVUXNHGWdSFxEb2GoSivHsd3DT0NOPZH33rtXzP5eoFbj7T7TnrqJFDzaDPIkaHAfVaDvuLFsXR7FUhVGg60nVoDPKULa6ygfELmg6XfMm23ltNwGTNX/NkPko1ySfwDhhvcBfK0TXaZXFpGF30c0Mi+X1tObJ+92hY1KiDI77vnA2XB8O/oDSewWhMK5MfBUEvh8om6FnnsnL2SB2Oo6jQ2+DSsAIHPUamx8hTobCmpenCURjbojz512u+kflb/N+TJ8pcMEw9yirpD80FISZ7AQAA
+    Metadata:
+      aws:cdk:path: CdkTsDemoStack/CDKMetadata/Default
+    Condition: CDKMetadataAvailable
+Parameters:
+  SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2
+  BootstrapVersion:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /cdk-bootstrap/hnb659fds/version
+    Description: Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]
+Conditions:
+  CDKMetadataAvailable:
+    Fn::Or:
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - af-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ca-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-northwest-1
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-3
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - me-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - sa-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-2
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-2
+Rules:
+  CheckBootstrapVersion:
+    Assertions:
+      - Assert:
+          Fn::Not:
+            - Fn::Contains:
+                - - "1"
+                  - "2"
+                  - "3"
+                  - "4"
+                  - "5"
+                - Ref: BootstrapVersion
+        AssertDescription: CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.
+
