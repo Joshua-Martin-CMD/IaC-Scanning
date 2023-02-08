@@ -1,6 +1,8 @@
 # action.yml
 name: Test KICS action PR comment
 
+on: workflow_dispatch
+
 jobs:
   kicks-TF:
     runs-on: ubuntu-latest
