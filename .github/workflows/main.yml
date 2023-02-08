@@ -1,7 +1,7 @@
 # action.yml
 name: Test KICS action PR comment
 
-on: workflow_dispatch
+on: [push]
 
 jobs:
   kicks-TF:
