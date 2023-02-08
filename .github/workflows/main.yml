@@ -1,0 +1,42 @@
+# action.yml
+name: Test KICS action PR comment
+
+on: [push]
+
+jobs:
+  kicks-TF:
+    runs-on: ubuntu-latest
+      # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v3
+    # Scan Iac with kics
+    - name: run kics Scan
+      uses: checkmarx/kics-github-action@v1.6
+      with:
+        # scanning two directories: ./terraform/ ./cfn-templates/ plus a single file
+        path: './terraform-demo'
+        output_path: myResults/
+    # Display the results in json format
+    - name: display kics results
+      run: |
+        cat myResults/results.json
+  
+  kicks-CDK-TS:
+    runs-on: ubuntu-latest
+      # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v3
+    # Scan Iac with kics
+    - name: run kics Scan
+      uses: checkmarx/kics-github-action@v1.6
+      with:
+        # scanning two directories: ./terraform/ ./cfn-templates/ plus a single file
+        path: './CDK-TS-Demo'
+        output_path: myResults/
+    # Display the results in json format
+    - name: display kics results
+      run: |
+        cat myResults/results.json
+  

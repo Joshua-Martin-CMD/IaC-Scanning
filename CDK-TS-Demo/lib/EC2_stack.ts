@@ -11,19 +11,23 @@ export class CdkTsDemoStack extends cdk.Stack {
     props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const proj_vpcId = cmd_cdk.env_config[environment]['Vpc_Id']
-    const proj_ami = cmd_cdk.env_config[environment].instance['ami-id']
+    //const proj_vpcId = cmd_cdk.env_config[environment]['Vpc_Id']
+    //const proj_ami = cmd_cdk.env_config[environment].instance['ami-id']
 
-    const vpclookup = ec2.Vpc.fromLookup(this,
-      'VPC-Lookup', {
-        vpcId: proj_vpcId // lookup from cdk.json for VPCID in the dev,uat or prod account
-      })
+    const vpc = new ec2.Vpc(this, 'DemoVPC' , {
+      cidr: "10.10.0.0/16"
+    })
+
+   // const vpclookup = ec2.Vpc.fromLookup(this,
+    //  'VPC-Lookup', {
+    //    vpcId: proj_vpcId // lookup from cdk.json for VPCID in the dev,uat or prod account
+    //  })
     
       const securityGroup = new ec2.SecurityGroup(
         this,
         'IaC-Demo-sg',
         {
-          vpc: vpclookup,
+          vpc: vpc,
           allowAllOutbound: true, // will let your instance send outboud traffic
           securityGroupName: 'IaC-Demo-sg',
         }
@@ -49,7 +53,7 @@ export class CdkTsDemoStack extends cdk.Stack {
       )
     
     const instance = new ec2.Instance(this, 'Linux-Instance', {
-      vpc: vpclookup,
+      vpc: vpc,
       securityGroup: securityGroup,
       instanceName: 'IaC-Demo_instance',
       instanceType: ec2.InstanceType.of(

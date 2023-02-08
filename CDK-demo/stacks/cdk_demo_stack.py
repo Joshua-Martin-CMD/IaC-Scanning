@@ -12,8 +12,6 @@ class CdkDemoStack(Stack):
 
         # The code that defines your stack goes here
 
-        # example resource
-        # queue = sqs.Queue(
-        #     self, "CdkDemoQueue",
-        #     visibility_timeout=Duration.seconds(300),
-        # )
+        # Creating a bucket exposed to the outside world
+
+        
